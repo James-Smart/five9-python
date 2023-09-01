@@ -5,7 +5,7 @@
 import pytest
 from unittest.mock import patch, Mock
 
-from five9_studio.api import client_v6
+from five9.api import client_v6
 
 
 def test_get_token():

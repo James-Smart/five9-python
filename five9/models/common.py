@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, Optional
 
 
 @dataclass
@@ -24,13 +24,13 @@ class StudioTask:
 
 @dataclass
 class StudioPromptVersion:
-    id: int
-    language: str
-    tts_voice_id: int
     prompt_tts_saml: str
-    prompt_audio_name: str
     tts_voice_name: str
-    configurable: bool
+    id: Optional[int] = None
+    language: Optional[str] = None
+    tts_voice_id: Optional[id] = None
+    prompt_audio_name: Optional[str] = None
+    configurable: Optional[bool] = None
 
     @staticmethod
     def from_dict(d):
