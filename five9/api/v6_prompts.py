@@ -8,12 +8,15 @@ class StudioV6Prompts():
     PROMPT_LIST_ONE_ENDPOINT = '/studio_instance/studio-api/v1/prompt/list-one/'
     PROMPT_UPDATE_TTS_ENDPOINT = '/studio_instance/studio-api/v1/prompt/update-tts/'
 
+    def __init__(self, client):
+        self.client = client
+
     def get_prompt_all(self, task):
         """Returns all tasks for the Studio 6 account.
         """
         params = {'script_id': str(task.id)}
         print(params)
-        response = self._send_request(
+        response = self.client._send_request(
             'POST',
             self.PROMPT_LIST_ALL_ENDPOINT,
             params=params
@@ -29,7 +32,7 @@ class StudioV6Prompts():
             'script_id': task,
             'prompt_id': id
         }
-        response = self._send_request(
+        response = self.client._send_request(
             'POST',
             self.PROMPT_LIST_ONE_ENDPOINT,
             params=params
@@ -43,7 +46,7 @@ class StudioV6Prompts():
             'tts_voice_id': str(prompt_ver.tts_voice_id),
             'prompt_tts': prompt_ver.prompt_tts_saml
         }
-        response = self._send_request(
+        response = self.client._send_request(
             'POST',
             self.PROMPT_UPDATE_TTS_ENDPOINT,
             params=params

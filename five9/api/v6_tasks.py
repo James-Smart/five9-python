@@ -5,10 +5,13 @@ from ..models.common import StudioTask
 class StudioV6Tasks():
     TASK_LIST_ALL_ENDPOINT = '/studio_instance/studio-api/v1/script/list-all/'
 
+    def __init__(self, client):
+        self.client = client
+
     def get_task_all(self):
         """Returns all tasks for the Studio 6 account.
         """
-        response = self._send_request(
+        response = self.client._send_request(
             'POST',
             self.TASK_LIST_ALL_ENDPOINT
         )

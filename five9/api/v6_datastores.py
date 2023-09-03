@@ -9,10 +9,13 @@ from .v6_prompts import StudioV6Prompts
 
 
 class StudioV6Datatstores():
-    DATASOTRE_LIST_ENDPOINT = '/studio_instance/studio-api/v1/datastore/list-all'
+    DATASTORE_LIST_ENDPOINT = '/studio_instance/studio-api/v1/datastore/list-all'
     DATASTORE_LIST_ONE_ENDPOINT = '/studio_instance/studio-api/v1/datastore/list-one-row'
     GET_AUDIO_FILE_ENDPOINT = '/studio_instance/studio-api/v1/datastore/get-audio-file'
     DATASTORE_SEARCH_ENDPOINT = '/studio_instance/studio-api/v1/datastore/search'
+
+    def __init__(self, client):
+        self.client = client
 
     def get_datastore_id(self, datastore_name):
         """Get the datastore ID for a given datastore name.
@@ -20,9 +23,9 @@ class StudioV6Datatstores():
         Args:
             datastore_name (str): The name of the datastore.
         """
-        response = self._send_request(
+        response = self.client._send_request(
             'POST',
-            self.DATASOTRE_LIST_ENDPOINT,
+            self.DATASTORE_LIST_ENDPOINT,
 
         )
 
@@ -45,7 +48,7 @@ class StudioV6Datatstores():
             'datastore_id': datastore_id,
             'data_id': row_id
         }
-        response = self._send_request(
+        response = self.client._send_request(
             'POST',
             self.DATASTORE_LIST_ONE_ENDPOINT,
             params=params,
@@ -66,7 +69,7 @@ class StudioV6Datatstores():
             'data_id': row_id,
             'column_name': column_name
         }
-        response = self._send_request(
+        response = self.client._send_request(
             'POST',
             self.GET_AUDIO_FILE_ENDPOINT,
             params=params,
@@ -89,7 +92,7 @@ class StudioV6Datatstores():
             for i, filter_obj in enumerate(filters):
                 base_params.update(filter_obj.to_params(i))
 
-        response = self._send_request(
+        response = self.client._send_request(
             'POST',
             self.DATASTORE_SEARCH_ENDPOINT,
             params=base_params,
