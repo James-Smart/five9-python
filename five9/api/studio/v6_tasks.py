@@ -1,5 +1,4 @@
-from .base_client import BaseAPIClient
-from ..models.common import StudioTask
+from ...models.common import StudioTask
 
 
 class StudioV6Tasks():

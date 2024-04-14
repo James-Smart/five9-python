@@ -1,0 +1,2107 @@
+openapi: 3.0.1
+info:
+  title: Data Tables Service.
+  description: Data Tables Service.
+  version: 1.4.0
+  contact:
+    name: Cloud Tribe
+    url: https://www.five9.com/about/contact
+    email: Cloud_Tribe@five9.com
+externalDocs:
+  description: Data Tables Service.
+  url: https://five9inc.atlassian.net/wiki/spaces/INFER/pages/7453573296/Embedded+IVR+General+Availability
+servers:
+  - url: https://{host_and_port}
+    variables:
+      host_and_port:
+        default: 'localhost:8080'
+        description: Host name and port where server listens for requests.
+tags:
+  - name: data-tables
+    description: Data Tables API.
+  - name: data-tables-attributes
+    description: Data Tables Attributes API.
+  - name: data-tables-data
+    description: Data Tables Data API.
+  - name: data-tables-queries
+    description: Data Tables Queries API.
+  - name: data-tables-queries-composite-filters
+    description: Data Tables Query Composite Filters API.
+  - name: data-tables-queries-property-filters
+    description: Data Tables Query Property Filters API.
+security:
+  - bearerAuth: [ ]
+paths:
+  /v1/domains/{domainId}/data-tables:
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+    post:
+      tags:
+        - data-tables
+      description: Creates a new data-tables for the given domain.
+      summary: Creates a new data-tables for the given domain.
+      operationId: createDataTable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataTable'
+      responses:
+        "201":
+          description: Successful creation operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataTable'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    get:
+      tags:
+        - data-tables
+      description: Retrieves a list of data table for the given domain id.
+      summary: Retrieves a list of data table for the given domain id.
+      operationId: getAllDataTables
+      parameters:
+        - $ref: '#/components/parameters/pageCursorParam'
+        - $ref: '#/components/parameters/pageLimitParam'
+      responses:
+        "200":
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataTables'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+  /v1/domains/{domainId}/data-tables/{dataTableId}:
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+      - $ref: '#/components/parameters/dataTableIdParam'
+    put:
+      tags:
+        - data-tables
+      description: Updates the data table with the given UUID.
+      summary: Updates the data table with the given UUID
+      operationId: updateDataTable
+      parameters:
+        - $ref: '#/components/parameters/ifMatch'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataTable'
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataTable'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    get:
+      tags:
+        - data-tables
+      description: Retrieves the data table for the given UUID.
+      summary: Retrieves the data table for the given UUID.
+      operationId: fetchDataTable
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataTable'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    delete:
+      tags:
+        - data-tables
+      summary: Soft deletes a data table and its data.
+      description: Soft deletes a data table and its data.
+      operationId: deleteDataTable
+      parameters:
+        - $ref: '#/components/parameters/ifMatch'
+      responses:
+        "204":
+          description: Indicates that the data table has been soft deleted successfully.
+        "400":
+          description: Indicates error in the request caused by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: The specified resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+  /v1/domains/{domainId}/data-tables/{dataTableId}/attributes:
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+      - $ref: '#/components/parameters/dataTableIdParam'
+    post:
+      tags:
+        - data-tables-attributes
+      description: Creates a new attribute for the given data table UUID.
+      summary: Creates a new attribute for the given data table UUID.
+      operationId: createAttribute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attribute'
+      responses:
+        "201":
+          description: Successful creation operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attribute'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    get:
+      tags:
+        - data-tables-attributes
+      description: Retrieves the a paginated list of attributes belonging to the data table UUID.
+      summary: Retrieves the a paginated list of attributes belonging to the data table UUID.
+      operationId: getAttributes
+      parameters:
+        - $ref: '#/components/parameters/pageCursorParam'
+        - $ref: '#/components/parameters/pageLimitParam'
+      responses:
+        "200":
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attributes'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+  /v1/domains/{domainId}/data-tables/{dataTableId}/attributes/{attributeId}:
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+      - $ref: '#/components/parameters/dataTableIdParam'
+      - $ref: '#/components/parameters/attributeIdParam'
+    get:
+      tags:
+        - data-tables-attributes
+      description: Retrieves the attribute for the given attribute UUID.
+      summary: Retrieves the attribute for the given attribute UUID.
+      operationId: getAttribute
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attribute'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    put:
+      tags:
+        - data-tables-attributes
+      description: Updates the attribute for the given attribute UUID.
+      summary: Updates the attribute for the given attribute UUID.
+      operationId: updateAttribute
+      parameters:
+        - $ref: '#/components/parameters/ifMatch'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attribute'
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attribute'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    delete:
+      tags:
+        - data-tables-attributes
+      summary: Soft deletes a attribute by its UUID.
+      description: Soft deletes a attribute by its UUID.
+      operationId: deleteAttribute
+      parameters:
+        - $ref: '#/components/parameters/ifMatch'
+      responses:
+        "204":
+          description: Indicates that the attribute has been soft deleted successfully.
+        "400":
+          description: Indicates error in the request caused by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: The specified resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+  /v1/domains/{domainId}/data-tables/{dataTableId}/data:
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+      - $ref: '#/components/parameters/dataTableIdParam'
+    post:
+      tags:
+        - data-tables-data
+      description: Creates a new data row for the given data table using the schema calculated from and validated against the data table's attributes.
+      summary: Creates a new data row for the given data table using the schema calculated from and validated against the data table's attributes.
+      operationId: createData
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataRow'
+      responses:
+        "201":
+          description: Successful creation operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataRow'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    get:
+      tags:
+        - data-tables-data
+      description: Retrieves a paginated list of data entities belonging to the data table UUID.
+      summary: Retrieves a paginated list of data entities belonging to the data table UUID.
+      operationId: getAllData
+      parameters:
+        - $ref: '#/components/parameters/pageCursorParam'
+        - $ref: '#/components/parameters/pageLimitParam'
+      responses:
+        "200":
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataRows'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+  /v1/domains/{domainId}/data-tables/{dataTableId}/data/{dataId}:
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+      - $ref: '#/components/parameters/dataTableIdParam'
+      - $ref: '#/components/parameters/dataIdParam'
+    get:
+      tags:
+        - data-tables-data
+      description: Retrieves the data row for the given data row UUID.
+      summary: Retrieves the data row for the given data row UUID.
+      operationId: getDataRow
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataRow'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    put:
+      tags:
+        - data-tables-data
+      description: Updates the data row for the given UUID.
+      summary: Updates the data row for the given UUID.
+      operationId: updateDataRow
+      parameters:
+        - $ref: '#/components/parameters/ifMatch'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataRow'
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataRow'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    delete:
+      tags:
+        - data-tables-data
+      summary: Soft deletes a data row by its UUID.
+      description: Soft deletes a data row  by its UUID.
+      operationId: deleteDataRow
+      parameters:
+        - $ref: '#/components/parameters/ifMatch'
+      responses:
+        "204":
+          description: Indicates that the data row has been soft deleted successfully.
+        "400":
+          description: Indicates error in the request caused by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: The specified resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+  /v1/domains/{domainId}/data-tables/{dataTableId}/queries:
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+      - $ref: '#/components/parameters/dataTableIdParam'
+    post:
+      tags:
+        - data-tables-queries
+      description: Creates a query for the given data table using the schema calculated from and validated against the data table's attributes.
+      summary: Creates a query for the given data table using the schema calculated from and validated against the data table's attributes.
+      operationId: createQuery
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Query'
+      responses:
+        "201":
+          description: Successful creation operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Query'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    get:
+      tags:
+        - data-tables-queries
+      description: Retrieves a paginated list of queries belonging to the data table UUID.
+      summary: Retrieves a paginated list of queries belonging to the data table UUID.
+      operationId: getQueries
+      parameters:
+        - $ref: '#/components/parameters/pageCursorParam'
+        - $ref: '#/components/parameters/pageLimitParam'
+      responses:
+        "200":
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Queries'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+  /v1/domains/{domainId}/data-tables/{dataTableId}/queries/{queryId}:
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+      - $ref: '#/components/parameters/dataTableIdParam'
+      - $ref: '#/components/parameters/queryIdParam'
+    get:
+      tags:
+        - data-tables-queries
+      description: Retrieves the query for the given data query UUID.
+      summary: Retrieves the data query for the given data query UUID.
+      operationId: getQuery
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Query'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    put:
+      tags:
+        - data-tables-queries
+      description: Updates the Query for the given data Query UUID.
+      summary: Updates the Query for the given data Query UUID.
+      operationId: updateQuery
+      parameters:
+        - $ref: '#/components/parameters/ifMatch'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Query'
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Query'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    delete:
+      tags:
+        - data-tables-queries
+      summary: Soft deletes a Query by its UUID.
+      description: Soft deletes a Query by its UUID.
+      operationId: deleteQuery
+      parameters:
+        - $ref: '#/components/parameters/ifMatch'
+      responses:
+        "204":
+          description: Indicates that the Query has been soft deleted successfully.
+        "400":
+          description: Indicates error in the request caused by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: The specified resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+  '/v1/domains/{domainId}/data-tables/{dataTableId}/queries/{queryId}:execute':
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+      - $ref: '#/components/parameters/dataTableIdParam'
+      - $ref: '#/components/parameters/queryIdParam'
+    post:
+      tags:
+        - data-tables-queries
+      description: Executes the query with the query id in the path against the data table in the path.
+      summary: Executes the query with the query id in the path against the data table in the path.
+      operationId: executeQuery
+      parameters:
+        - in: query
+          name: queryParams
+          required: true
+          schema:
+            type: string
+            additionalProperties:
+              type: string
+          example:
+            attributeName1: [ "true" ]
+            attributeName2: [ "2013-05-14T00:01:00.234Z" ]
+            attributeName3: [ "Billing Department", "Sales Department" ]
+            attributeName4: [ "29492" ]
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataRows'
+        "202":
+          description: Accepted but indexes are not ready. Try again once indexes are ready.
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+  /v1/domains/{domainId}/data-tables/{dataTableId}/queries/{queryId}/query-composite-filters:
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+      - $ref: '#/components/parameters/dataTableIdParam'
+      - $ref: '#/components/parameters/queryIdParam'
+    post:
+      tags:
+        - data-tables-queries-composite-filters
+      description: Create a Query Composite Filter for the given data Query UUID.
+      summary: Create a Query Composite Filter for the given data Query UUID.
+      operationId: createQueryCompositeFilter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryCompositeFilter'
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryCompositeFilter'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+  /v1/domains/{domainId}/data-tables/{dataTableId}/queries/{queryId}/query-composite-filters/{queryCompositeFilterId}:
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+      - $ref: '#/components/parameters/dataTableIdParam'
+      - $ref: '#/components/parameters/queryIdParam'
+      - $ref: '#/components/parameters/queryCompositeFilterIdParam'
+    get:
+      tags:
+        - data-tables-queries-composite-filters
+      description: Retrieves the root Query Composite Filter and it's descendent filters for the given query UUID.
+      summary: Retrieves the root Query Composite Filter and it's descendent filters for the given query UUID.
+      operationId: getQueryCompositeFilter
+      responses:
+        "200":
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryCompositeFilter'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    put:
+      tags:
+        - data-tables-queries-composite-filters
+      description: Updates the Query Composite Filter for the given Query Composite Filter UUID.
+      summary: Updates the Query Composite Filter for the given Query Composite Filter.
+      operationId: updateQueryCompositeFilter
+      parameters:
+        - $ref: '#/components/parameters/ifMatch'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryCompositeFilter'
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryCompositeFilter'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    delete:
+      tags:
+        - data-tables-queries-composite-filters
+      summary: Soft deletes a Query Composite Filter by its UUID.
+      description: Soft deletes a Query Composite Filter by its UUID.
+      operationId: deleteQueryCompositeFilter
+      parameters:
+        - $ref: '#/components/parameters/ifMatch'
+      responses:
+        "204":
+          description: Indicates that the entity has been soft deleted successfully.
+        "400":
+          description: Indicates error in the request caused by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: The specified resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+  /v1/domains/{domainId}/data-tables/{dataTableId}/queries/{queryId}/query-composite-filters/{queryCompositeFilterId}/query-property-filters:
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+      - $ref: '#/components/parameters/dataTableIdParam'
+      - $ref: '#/components/parameters/queryIdParam'
+      - $ref: '#/components/parameters/queryCompositeFilterIdParam'
+    get:
+      tags:
+        - data-tables-queries-property-filters
+      description: Retrieves a paginated list of Query Property Filters for the given data query UUID and Composite Filter UUID.
+      summary: Retrieves a paginated list of Query Property Filters for the given data query UUID and Composite Filter UUID.
+      operationId: getQueryPropertyFilters
+      parameters:
+        - $ref: '#/components/parameters/pageCursorParam'
+        - $ref: '#/components/parameters/pageLimitParam'
+      responses:
+        "200":
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryPropertyFilters'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    post:
+      tags:
+        - data-tables-queries-property-filters
+      description: Create a Query Property Filter for the given data Query UUID and Query Composite Filter.
+      summary: Create a Query Property Filter for the given data Query UUID and Query Composite Filter.
+      operationId: createQueryPropertyFilter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryPropertyFilter'
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryPropertyFilter'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+  /v1/domains/{domainId}/data-tables/{dataTableId}/queries/{queryId}/query-composite-filters/{queryCompositeFilterId}/query-property-filters/{queryPropertyFilterId}:
+    parameters:
+      - $ref: '#/components/parameters/domainIdParam'
+      - $ref: '#/components/parameters/dataTableIdParam'
+      - $ref: '#/components/parameters/queryIdParam'
+      - $ref: '#/components/parameters/queryCompositeFilterIdParam'
+      - $ref: '#/components/parameters/queryPropertyFilterIdParam'
+    get:
+      tags:
+        - data-tables-queries-property-filters
+      description: Retrieves the Query Property Filter for the given data query UUID and Composite Filter UUID.
+      summary: Retrieves the Query Property Filter for the given data query UUID and Composite Filter UUID.
+      operationId: getQueryPropertyFilter
+      responses:
+        "200":
+          description: Successful operation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryPropertyFilter'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    put:
+      tags:
+        - data-tables-queries-property-filters
+      description: Updates the Query Property Filter for the given data Query UUID and Query Composite Filter UUID.
+      summary: Updates the Query Property Filter for the given data Query UUID and Query Composite Filter UUID.
+      operationId: updateQueryPropertyFilter
+      parameters:
+        - $ref: '#/components/parameters/ifMatch'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryPropertyFilter'
+      responses:
+        "200":
+          description: Successful operation.
+          headers:
+            ETag:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QueryPropertyFilter'
+        "400":
+          description: |
+            Indicates error in the request cause by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: Entity was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: |
+            Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+    delete:
+      tags:
+        - data-tables-queries-property-filters
+      summary: Soft deletes a Query Property Filter by its UUID.
+      description: Soft deletes a Query Property Filter by its UUID.
+      operationId: deleteQueryPropertyFilter
+      parameters:
+        - $ref: '#/components/parameters/ifMatch'
+      responses:
+        "204":
+          description: Indicates that the entity has been soft deleted successfully.
+        "400":
+          description: Indicates error in the request caused by client.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "401":
+          description: Authentication error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "403":
+          description: Caller has incorrect role.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "404":
+          description: The specified resource was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+        "500":
+          description: Indicates error on server side.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HttpError'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+
+  parameters:
+    ifMatch:
+      name: If-Match
+      description: The object optimistic locking fingerprint.
+      in: header
+      schema:
+        type: string
+    pageCursorParam:
+      name: pageCursor
+      in: query
+      description: The page cursor
+      schema:
+        type: string
+    pageLimitParam:
+      name: pageLimit
+      in: query
+      description: The page limit (default 100)
+      schema:
+        type: integer
+        format: int32
+        example: 75
+    domainIdParam:
+      name: domainId
+      in: path
+      required: true
+      description: Id of the domain.
+      example: "87000000001079"
+      schema:
+        type: string
+    queryIdParam:
+      name: queryId
+      in: path
+      required: true
+      description: UUID of the query.
+      example: '22dad734-6fb5-41e8-b9ab-5ae7ad92a72e'
+      schema:
+        type: string
+    queryCompositeFilterIdParam:
+      name: queryCompositeFilterId
+      in: path
+      required: true
+      description: UUID of the query composite filter.
+      example: '22dad734-6fb5-41e8-b9ab-5ae7ad92a72e'
+      schema:
+        type: string
+    queryPropertyFilterIdParam:
+      name: queryPropertyFilterId
+      in: path
+      required: true
+      description: UUID of the query proprety filter.
+      example: '22dad734-6fb5-41e8-b9ab-5ae7ad92a72e'
+      schema:
+        type: string
+    dataTableIdParam:
+      name: dataTableId
+      in: path
+      required: true
+      description: UUID of the data table.
+      example: '22dad734-6fb5-41e8-b9ab-5ae7ad92a72e'
+      schema:
+        type: string
+    attributeIdParam:
+      name: attributeId
+      in: path
+      required: true
+      description: UUID of the attribute.
+      example: '22dad734-6fb5-41e8-b9ab-5ae7ad92a72e'
+      schema:
+        type: string
+    dataIdParam:
+      name: dataId
+      in: path
+      required: true
+      description: UUID of the data row.
+      example: '22dad734-6fb5-41e8-b9ab-5ae7ad92a72e'
+      schema:
+        type: string
+  schemas:
+    DataTable:
+      type: object
+      required:
+        - dataTableName
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainRef'
+        dataTableId:
+          type: string
+          readOnly: true
+          example: '22dad734-6fb5-41e8-b9ab-5ae7ad92a72e'
+        dataTableName:
+          type: string
+          pattern: '^[A-Z_]+$'
+          example: 'DATA_TABLE_NAME'
+        dataTableDescription:
+          type: string
+          example: 'A user supplied description describing this data table.'
+        createdOn:
+          type: string
+          format: date-time
+          readOnly: true
+        lastModifiedOn:
+          type: string
+          format: date-time
+          readOnly: true
+        rowCount:
+          type: integer
+          example: 5
+          readOnly: true
+        uri:
+          description: The URI to data table resource.
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.prod.us.five9.net/data-tables/v1/domains/87000000001079/data-tables/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e
+    DataTables:
+      type: object
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainRef'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataTable'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Attributes:
+      type: object
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainRef'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attribute'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Attribute:
+      type: object
+      required:
+        - attributeName
+        - dataType
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainRef'
+        dataTableId:
+          type: string
+          readOnly: true
+          example: '22dad734-6fb5-41e8-b9ab-5ae7ad92a72e'
+        attributeId:
+          type: string
+          readOnly: true
+          example: '97ba50b4-bf77-11ed-afa1-0242ac120002'
+        attributeName:
+          type: string
+          example: 'COLUMN_A'
+        attributeDefaultValue:
+          type: string
+          example: '500'
+        attributeMinimumValue:
+          type: string
+          example: '0'
+        attributeMaximumValue:
+          type: string
+          example: '1000'
+        unique:
+          type: boolean
+          description: If true this attribute is unique. An error on data insert will be thrown if a duplicate data value already exists for this attribute.
+          example: false
+        required:
+          type: boolean
+          description: If true this attribute will be required to have a non-null value when creating a row in a data table.
+          example: false
+        containsSensitiveData:
+          type: boolean
+          description: A flag that indicates of this attribute contains sensitive data.
+          example: false
+        dataType:
+          type: string
+          example: 'INTEGER_64_BIT'
+          enum:
+            - STRING
+            - INTEGER_64_BIT
+            - DECIMAL_64_BIT
+            - BOOLEAN
+            - TIMESTAMP
+        uri:
+          description: The URI to attribute resource.
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.prod.us.five9.net/data-tables/v1/domains/87000000001079/data-tables/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e/attributes/97ba50b4-bf77-11ed-afa1-0242ac120002
+    DataRow:
+      type: object
+      required:
+        - data
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainRef'
+        dataTableId:
+          type: string
+          readOnly: true
+          example: '8787a1a4-0d3d-4cb7-88be-a689f5b6db3e'
+        dataId:
+          type: string
+          readOnly: true
+          example: '22dad734-6fb5-41e8-b9ab-5ae7ad92a72e'
+        attributeDataValues:
+          additionalProperties:
+            type: object
+        uri:
+          description: The URI to data row resource.
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.prod.us.five9.net/data-tables/v1/domains/87000000001079/data-tables/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e/data/97ba50b4-bf77-11ed-afa1-0242ac120002
+    DataRows:
+      type: object
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainRef'
+        items:
+          type: array
+          items:
+            type: object
+            properties:
+              dataTableId:
+                type: string
+                readOnly: true
+                example: '8787a1a4-0d3d-4cb7-88be-a689f5b6db3e'
+              dataId:
+                type: string
+                readOnly: true
+                example: '22dad734-6fb5-41e8-b9ab-5ae7ad92a72e'
+              attributeDataValues:
+                additionalProperties:
+                  type: object
+              uri:
+                description: The URI to data row resource.
+                type: string
+                format: uri
+                readOnly: true
+                example: https://api.prod.us.five9.net/data-tables/v1/domains/87000000001079/data-tables/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e/data/97ba50b4-bf77-11ed-afa1-0242ac120002
+        paging:
+          $ref: '#/components/schemas/Paging'
+    QueryCompositeFilter:
+      type: object
+      required:
+        - queryCompositeFilterType
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainRef'
+        dataTableId:
+          type: string
+          readOnly: true
+          example: '8787a1a4-0d3d-4cb7-88be-a689f5b6db3e'
+        queryId:
+          type: string
+          readOnly: true
+          example: '97ba50b4-bf77-11ed-afa1-0242ac120002'
+        queryCompositeFilterId:
+          type: string
+          readOnly: true
+          example: '57f2f232-e2b9-11ed-b5ea-0242ac120002'
+        parentQueryCompositeFilter:
+          $ref: '#/components/schemas/QueryCompositeFilterRef'
+        queryCompositeFilterType:
+          type: string
+          example: 'AND'
+          enum:
+            - AND
+            - OR
+            - NONE
+        propertyFilters:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/QueryPropertyFilter'
+        childCompositeFilters:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/QueryCompositeFilter'
+        uri:
+          description: The URI to QueryCompositeFilter resource.
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.prod.us.five9.net/data-tables/v1/domains/87000000001079/data-tables/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e/queries/97ba50b4-bf77-11ed-afa1-0242ac120002/query-composite-filter/57f2f232-e2b9-11ed-b5ea-0242ac120002
+    QueryPropertyFilter:
+      type: object
+      required:
+        - attributeId
+        - queryPropertyFilterType
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainRef'
+        dataTableId:
+          type: string
+          readOnly: true
+          example: '8787a1a4-0d3d-4cb7-88be-a689f5b6db3e'
+        queryId:
+          type: string
+          readOnly: true
+          example: '97ba50b4-bf77-11ed-afa1-0242ac120002'
+        queryCompositeFilterId:
+          type: string
+          readOnly: true
+          example: '57f2f232-e2b9-11ed-b5ea-0242ac120002'
+        queryPropertyFilterId:
+          type: string
+          readOnly: true
+          example: '57f2f232-e2b9-11ed-b5ea-0242ac120002'
+        attributeId:
+          type: string
+          example: '97ba50b4-bf77-11ed-afa1-0242ac120002'
+        attributeName:
+          type: string
+          description: "The name of the attribute. This name will also be used as the 'key' for query parameter mapping."
+          example: 'attributeName3'
+        defaultAttributeValues:
+          type: array
+          items: { }
+          description: "The default value to be used if no query param is provided along side the operator. Must match the attribute's data type."
+        queryPropertyFilterType:
+          type: string
+          enum:
+            - EQUAL
+            - NOT_EQUAL
+            - LESS_THAN
+            - LESS_THAN_OR_EQUAL
+            - GREATER_THAN
+            - GREATER_THAN_OR_EQUAL
+            - IN
+            - NOT_IN
+            - NONE
+          example: 'EQUAL'
+        uri:
+          description: The URI to QueryPropertyFilter row resource.
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.prod.us.five9.net/data-tables/v1/domains/87000000001079/data-tables/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e/queries/97ba50b4-bf77-11ed-afa1-0242ac120002/query-composite-filter/57f2f232-e2b9-11ed-b5ea-0242ac120002/query-proprety-filter/3fb26146-89ef-4b2d-8482-43feeef49193
+    Query:
+      type: object
+      required:
+        - queryName
+        - query
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainRef'
+        queryId:
+          type: string
+          readOnly: true
+          example: '22dad734-6fb5-41e8-b9ab-5ae7ad92a72e'
+        dataTableId:
+          type: string
+          readOnly: true
+          example: '22dad734-6fb5-41e8-b9ab-5ae7ad92a72e'
+        queryName:
+          type: string
+          example: 'Name of the Query'
+        queryDescription:
+          type: string
+          example: 'A description by the user describing the query.'
+        queryCompositeFilter:
+          $ref: '#/components/schemas/QueryCompositeFilterRef'
+        orderByAttribute:
+          $ref: '#/components/schemas/AttributeRef'
+        targetAttributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeRef'
+        orderBySortType:
+          type: string
+          enum:
+            - ASCENDING
+            - DESCENDING
+            - NONE
+          example: 'DESCENDING'
+        rowLimit:
+          type: integer
+          example: 5
+        uri:
+          description: The URI to query resource.
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.prod.us.five9.net/data-tables/v1/domains/87000000001079/data-tables/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e/queries/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e
+    Queries:
+      type: object
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainRef'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryRef'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    QueryPropertyFilters:
+      type: object
+      properties:
+        domain:
+          $ref: '#/components/schemas/DomainRef'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/QueryPropertyFilterRef'
+        paging:
+          $ref: '#/components/schemas/Paging'
+    Paging:
+      type: object
+      properties:
+        pageLimit:
+          description: The pageLimit used, the pageLimit may be smaller than requested
+            because of a system imposed limit.
+          type: integer
+          format: int32
+          example: 75
+        next:
+          type: string
+          description: The system-generated URI to retrieve the next page of items
+          readOnly: true
+          format: uri
+          example: https://api.prod.us.five9.net/data-tables/v1/domains/87000000001079/data-tables/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e/data?pageCursor=AQEADvF_74uzm_RspRkCJ4dfurDAnrRVAF6rzS4Rln8tLwlkNqnsV-Wi8TXYSsMHGis8&pageLimit=75
+    DomainRef:
+      type: object
+      readOnly: true
+      properties:
+        domainId:
+          description: The domain identifier.
+          type: string
+          example: '87000000001079'
+          readOnly: true
+        uri:
+          description: The URI to the domain resource.
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.prod.us.five9.net/domains/v1/domains/87000000001079
+    AttributeRef:
+      type: object
+      required:
+        - attributeId
+      properties:
+        attributeId:
+          description: The Attribute identifier.
+          type: string
+          example: '97ba50b4-bf77-11ed-afa1-0242ac120002'
+        uri:
+          description: The URI to the Attribute resource.
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.prod.us.five9.net/data-tables/v1/domains/87000000001079/data-tables/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e/attributes/97ba50b4-bf77-11ed-afa1-0242ac120002
+    QueryRef:
+      type: object
+      required:
+        - queryId
+      properties:
+        queryId:
+          description: The QueryCompositeFilter identifier.
+          type: string
+          example: '97ba50b4-bf77-11ed-afa1-0242ac120002'
+        uri:
+          description: The URI to the QueryCompositeFilter resource.
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.prod.us.five9.net/data-tables/v1/domains/87000000001079/data-tables/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e/queries/97ba50b4-bf77-11ed-afa1-0242ac120002
+    QueryCompositeFilterRef:
+      type: object
+      required:
+        - queryCompositeFilterRefId
+      properties:
+        queryCompositeFilterRefId:
+          description: The QueryCompositeFilter identifier.
+          type: string
+          example: '97ba50b4-bf77-11ed-afa1-0242ac120002'
+        uri:
+          description: The URI to the QueryCompositeFilter resource.
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.prod.us.five9.net/data-tables/v1/domains/87000000001079/data-tables/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e/queries/97ba50b4-bf77-11ed-afa1-0242ac120002/query-composite-filters/57f2f232-e2b9-11ed-b5ea-0242ac120002
+    QueryPropertyFilterRef:
+      type: object
+      required:
+        - queryPropertyFilterRefId
+      properties:
+        queryPropertyFilterRefId:
+          description: The QueryPropertyFilter identifier.
+          type: string
+          example: '50029e42-f8b2-11ed-be56-0242ac120002'
+        uri:
+          description: The URI to the QueryPropertyFilter resource.
+          type: string
+          format: uri
+          readOnly: true
+          example: https://api.prod.us.five9.net/data-tables/v1/domains/87000000001079/data-tables/22dad734-6fb5-41e8-b9ab-5ae7ad92a72e/queries/97ba50b4-bf77-11ed-afa1-0242ac120002/query-composite-filters/57f2f232-e2b9-11ed-b5ea-0242ac120002/query-property-filters/50029e42-f8b2-11ed-be56-0242ac120002
+    HttpError:
+      type: object
+      required:
+        - traceId
+      properties:
+        traceId:
+          type: string
+          description: A tracing identifier to allow the message as received by a client to be correlated with the error messages on the server.
+        details:
+          description: Additional details that indicates the cause of the error.
+          type: array
+          items:
+            $ref: '#/components/schemas/HttpErrorDetail'
+    HttpErrorDetail:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          description: Error code associated to the error detail.
+          type: string
+        message:
+          description: Error message associated to the error detail.
+          type: string
+        path:
+          description: Path to the path paremeter, query parameter, request object or attribute that caused this error detail.
+          type: string
+        invalidValue:
+          description: The value of the item that caused the error.
+          type: string

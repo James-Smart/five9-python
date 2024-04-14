@@ -1,6 +1,5 @@
 from requests.auth import HTTPDigestAuth
-import requests
-from ratelimiter import RateLimiter
+from requests_ratelimiter import LimiterSession
 
 
 class BaseAPIClient:
@@ -9,8 +8,9 @@ class BaseAPIClient:
     def __init__(self, base_url, max_requests_per_second=5):
         self.base_url = base_url
         self.params = {}
-        self._rate_limiter = RateLimiter(
-            max_calls=max_requests_per_second, period=1)
+        # self._rate_limiter = RateLimiter(
+        #    max_calls=max_requests_per_second, period=1)
+        self.session = LimiterSession(per_second=max_requests_per_second)
 
     @property
     def rate_limiter(self):
@@ -20,9 +20,8 @@ class BaseAPIClient:
         url = f"{self.base_url}{endpoint}"
         default_params = self.params.copy()
         default_params = {**default_params, **(params or {})}
-        with self.rate_limiter:
-            response = requests.request(
-                method, url, params=default_params, json=data)
+        response = self.session.request(
+            method, url, params=default_params, json=data)
         if response.status_code == 400:
             data = response.json()
             if data['result']['error']['code'] == 'INVALID_TOKEN':
@@ -43,7 +42,7 @@ class BaseAPIClient:
             self.username, self.password, self.api_key))
 
     def _get_token(self, username, password, api_key):
-        response = requests.post(
+        response = self.session.post(
             f'{self.base_url}{self.AUTH_ENDPOINT}',
             auth=HTTPDigestAuth(username, password),
             params={'apikey': api_key})

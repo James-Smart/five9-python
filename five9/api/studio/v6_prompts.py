@@ -1,5 +1,4 @@
-from .base_client import BaseAPIClient
-from ..models.common import StudioPromptVersion, StudioPrompt
+from ...models.common import StudioPromptVersion, StudioPrompt
 from itertools import groupby
 
 
@@ -46,7 +45,7 @@ class StudioV6Prompts():
             'tts_voice_id': str(prompt_ver.tts_voice_id),
             'prompt_tts': prompt_ver.prompt_tts_saml
         }
-        response = self.client._send_request(
+        self.client._send_request(
             'POST',
             self.PROMPT_UPDATE_TTS_ENDPOINT,
             params=params

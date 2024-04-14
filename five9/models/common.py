@@ -24,6 +24,7 @@ class StudioTask:
 
 @dataclass
 class StudioPromptVersion:
+    '''An individual prompt, this should belong toa StudioPrompt object'''
     prompt_tts_saml: str
     tts_voice_name: str
     id: Optional[int] = None
@@ -47,6 +48,7 @@ class StudioPromptVersion:
 
 @dataclass
 class StudioPrompt:
+    '''A collection of StudioPromptVersion objects'''
     id: int
     name: str
     instance_id: int

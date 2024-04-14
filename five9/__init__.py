@@ -2,6 +2,7 @@
 
 __author__ = """James Smart"""
 __email__ = 'james@jsmart.me.uk'
-__version__ = '0.1.0'
-from .api.client_v6 import StudioAPIClientV6
+__version__ = '0.0.1'
+from .api.studio.client_v6 import StudioAPIClientV6
 from .models.query_filter import Filter
+from .api.restadmin.restadmin_client import RestAdminAPIClient
