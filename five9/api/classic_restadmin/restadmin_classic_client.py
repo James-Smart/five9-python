@@ -1,10 +1,10 @@
-from .base_client import BaseAPIClient
-from .context_services import ContextServices
-from .vcc_prompts import VCCPrompts
+from ..restadmin.base_client import BaseAPIClient
+from .vcc_prompts_classic import VCCClassicPrompts
+from .common_objects import CommonObjects
 
-class RestAdminAPIClient(BaseAPIClient):
+class RestAdminClassicAPIClient(BaseAPIClient):
     def __init__(self, base_url, username, password, domain_id):
-        """Instantiate a new RestAdminAPIClient object.
+        """Instantiate a new RestAdminClassicAPIClient object.
 
         Args:
             base_url (str): The base URL of the VCC instance.
@@ -18,9 +18,10 @@ class RestAdminAPIClient(BaseAPIClient):
         self.username = username
         self.password = password
         self.domain_id = domain_id
-        self._set_token_in_param(
-            self._get_token(username, password))
+        self._set_basic_auth()
 
-        self.context_services = ContextServices(self)
-        self.vcc_prompts = VCCPrompts(self)
+        self.vcc_prompts = VCCClassicPrompts(self)
+        self.common_objects = CommonObjects(self)
+
+
 

@@ -1,5 +1,5 @@
 from requests import Session
-
+import base64
 
 class BaseAPIClient:
     AUTH_ENDPOINT = '/cloudauthsvcs/v1/admin/login'
@@ -9,6 +9,7 @@ class BaseAPIClient:
         self.params = {}
         self.headers = {'Content-Type': 'application/json'}
         self.session = Session()
+        self.basic = False
 
     def _send_request(self, method, endpoint, params=None, data=None):
         url = f"{self.base_url}{endpoint}"
@@ -44,7 +45,7 @@ class BaseAPIClient:
         response = self.session.post(
             f'{self.base_url}{self.AUTH_ENDPOINT}',
             json=payload)
-
+    
         # Validatde the response
         if response.status_code != 200:
             raise Exception(
@@ -54,3 +55,11 @@ class BaseAPIClient:
 
     def _set_token_in_param(self, access_token):
         self.headers['Authorization'] = f'Bearer {access_token}'
+    
+    def _get_basic_auth(self):
+        self.basic = True
+        return base64.b64encode(f'{self.username}:{self.password}'.encode()).decode()
+    
+    def _set_basic_auth(self):
+        self.headers['Authorization'] = f'Basic {self._get_basic_auth()}'
+    

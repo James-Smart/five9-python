@@ -109,3 +109,4 @@ ENV/
 # custom
 scratch.py
 .github
+.DS_Store

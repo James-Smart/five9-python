@@ -88,5 +88,34 @@ class StudioV6Datatstores():
             params=base_params,
             data={}
         )
+        print (response.status_code)
+        print (response.text)
 
         return response.json().get('result', [])
+    
+    def get_datastore_search_rows_paginated(self, datastore_id, filters=None, page=1, page_size=100):
+        """Get a list of rows from a datastore that match the given filters.
+
+        Args:
+            datastore_id (str): The ID of the datastore.
+            filters (list, optional): A list of filters to apply to the search. Defaults to None.
+            page (int, optional): The page number to retrieve. Defaults to 1.
+            page_size (int, optional): The number of rows to retrieve per page. Defaults to 100.
+        """
+        base_params = {
+            'datastore_id': datastore_id,
+            'paginate': { "pagination": { "total_count": 100, "current_page": 5, "per_page": 100, "total_pages": 10 } }
+        }
+
+        if filters:
+            for i, filter_obj in enumerate(filters):
+                base_params.update(filter_obj.to_params(i))
+
+        response = self.client._send_request(
+            'POST',
+            self.DATASTORE_SEARCH_ENDPOINT,
+            params=base_params,
+            data={}
+        )
+        print (response.status_code)
+        return response.json()

@@ -22,7 +22,14 @@ class VCCPrompts:
     def get_vccprompt_by_id(self, id):
         response = self.client._send_request(
             'GET',
-            f'{self.VCCPROMPT_GET_ENDPOINT}/{id}/languages/{id}',
+            f'{self.VCCPROMPT_GET_ENDPOINT}/{id}',
         )
         # return VCCPrompt.model_validate(response.json())
+        return response.json()
+    
+    def get_vccprompt_wav_by_id(self, id):
+        response = self.client._send_request(
+            'GET',
+            f'{self.VCCPROMPT_GET_ENDPOINT}/{id}/languages/',
+        )
         return response.json()
