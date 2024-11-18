@@ -1,7 +1,7 @@
 [project]
 
 name = "five9-python"
-version = "0.0.3"
+version = "0.0.4.dev1"
 description = "A Python SDK for working with Five9 CCaaS API's"
 readme = "README.md"
 requires-python = ">=3.8"
