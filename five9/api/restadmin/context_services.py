@@ -15,7 +15,7 @@ class ContextServices:
             'POST',
             self.DATATABLE_GET_ENDPOINT,
             data=datatable.model_dump(
-                by_alias=True, exclude_none=True)
+                by_alias=True, exclude_none=True, exclude_defaults=True)
         )
         datatable = Datatable.model_validate(response.json())
         return datatable

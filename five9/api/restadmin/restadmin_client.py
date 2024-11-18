@@ -1,6 +1,7 @@
 from .base_client import BaseAPIClient
 from .context_services import ContextServices
 from .vcc_prompts import VCCPrompts
+from .speed_dials import SpeedDials
 
 class RestAdminAPIClient(BaseAPIClient):
     def __init__(self, base_url, username, password, domain_id):
@@ -23,4 +24,6 @@ class RestAdminAPIClient(BaseAPIClient):
 
         self.context_services = ContextServices(self)
         self.vcc_prompts = VCCPrompts(self)
+        self.speed_dials = SpeedDials(self)
+
 

@@ -3,6 +3,7 @@ class StudioV6Datatstores():
     DATASTORE_LIST_ONE_ENDPOINT = '/studio_instance/studio-api/v1/datastore/list-one-row'
     GET_AUDIO_FILE_ENDPOINT = '/studio_instance/studio-api/v1/datastore/get-audio-file'
     DATASTORE_SEARCH_ENDPOINT = '/studio_instance/studio-api/v1/datastore/search'
+    DATASTORE_ADD_ROW_ENDPOINT = '/studio_instance/studio-api/v1/datastore/add-row'
 
     def __init__(self, client):
         self.client = client
@@ -119,3 +120,25 @@ class StudioV6Datatstores():
         )
         print (response.status_code)
         return response.json()
+    
+    def add_datastore_row(self, datastore_id, data):
+        """Add a new row to a datastore.
+
+        Args:
+            datastore_id (str): The ID of the datastore.
+            data (dict): The data to add to the row, will be sent as parameters in the format data[<column_name>] = <value>.
+        """
+        params = {
+            'datastore_id': datastore_id
+        }
+        for key, value in data.items():
+            params[f'data[{key}]'] = value
+
+        response = self.client._send_request(
+            'POST',
+            self.DATASTORE_ADD_ROW_ENDPOINT,
+            params=params,
+            data={}
+        )
+        return response.json().get('result', {})
+

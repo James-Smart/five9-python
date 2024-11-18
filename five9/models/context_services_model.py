@@ -41,11 +41,11 @@ class Datatable(BaseModel):
         row_count (int, optional): The number of rows in the data table.
     '''
 
-    id: str = Field(alias='dataTableId')
+    id: Optional[str] = Field(None, alias='dataTableId')
     name: str = Field(alias='dataTableName')
     description: str = Field(alias='dataTableDescription')
-    uri: str
-    row_count: Optional[int] = Field(alias='rowCount')
+    uri: Optional[str] = None
+    row_count: Optional[int] = Field(None, alias='rowCount')
     attributes: List[Attribute] = []
 
     def get_attribute_by_name(self, name: str) -> Attribute:
