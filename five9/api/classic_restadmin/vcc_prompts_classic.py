@@ -21,4 +21,21 @@ class VCCClassicPrompts:
             'GET',
             f'{self.VCCPROMPT_GET_ENDPOINT}/{id}',
             )
+        print(response.json())
+        return VCCPrompt.model_validate(response.json())
+    
+    def get_full_lang_prompt_by_id(self, id, lang_id):
+        response = self.client._send_request(
+            'GET',
+            f'{self.VCCPROMPT_GET_ENDPOINT}/{id}/languges/{lang_id}',
+            )
+        return VCCPrompt.model_validate(response.json())
+    
+    def create_prompt(self, prompt: VCCPrompt):
+        response = self.client._send_request(
+            'POST',
+            self.VCCPROMPT_GET_ENDPOINT,
+            data=prompt.model_dump(
+                by_alias=True, exclude_none=True, exclude={''},
+            ))
         return VCCPrompt.model_validate(response.json())

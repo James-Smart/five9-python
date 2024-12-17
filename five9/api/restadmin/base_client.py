@@ -1,6 +1,7 @@
 from requests import Session
 import base64
 
+
 class BaseAPIClient:
     AUTH_ENDPOINT = '/cloudauthsvcs/v1/admin/login'
 

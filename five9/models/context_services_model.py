@@ -8,11 +8,11 @@ class Attribute(BaseModel):
     Represents a data table attribute, which is a column in a data table.
     '''
     datatable_id: str = Field(alias='dataTableId')
-    id: str = Field(alias='attributeId')
+    id: Optional[str] = Field(None, alias='attributeId')
     name: str = Field(alias='attributeName')
     data_type: str = Field(alias='dataType')
     uri: Optional[str] = None
-    default_value: Optional[str] = Field(alias='attributeDefaultValue')
+    default_value: Optional[str] = Field(None, alias='attributeDefaultValue')
     min_value: Optional[str] = Field(alias='attributeMinimumValue')
     max_value: Optional[str] = Field(alias='attributeMaximumValue')
     unique: Optional[bool] = None

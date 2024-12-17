@@ -94,6 +94,20 @@ class ContextServices:
         if response.status_code != 204:
             raise Exception(f'Failed to delete attribute {attribute.name}')
         return True
+    
+    def add_new_row(self, datatable: Datatable, row_dict: dict):
+        '''
+        Given a dictionary of row data, creates a new row in the datatable
+        '''
+        formatted_data = {
+        "attributeDataValues": row_dict
+        }
+        response = self.client._send_request(
+            'POST',
+            f'{self.DATATABLE_GET_ENDPOINT}/{datatable.id}/data',
+            data=formatted_data
+        )
+        
 
     def add_row(self, row: Row) -> Row:
         '''
