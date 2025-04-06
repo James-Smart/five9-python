@@ -1,5 +1,6 @@
 from requests import Session
 import base64
+import devtools
 
 
 class BaseAPIClient:
@@ -13,6 +14,7 @@ class BaseAPIClient:
         self.basic = False
 
     def _send_request(self, method, endpoint, params=None, data=None):
+        devtools.pprint(data)
         url = f"{self.base_url}{endpoint}"
         print(url)
         default_params = self.params.copy()
